@@ -1,7 +1,7 @@
-# payroll-system
-a simple payroll system
+# pos-system
+a simple point of sale system
 
-note:my dad requested to make him a payroll program so i could implement what i learned from the book that he buyed so heres the
+note:my dad requested to make him a point of sale program so i could implement what i learned from the book that he buyed so heres the
 changelog:
 
 version 0.1:
