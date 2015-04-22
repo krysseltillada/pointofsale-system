@@ -500,6 +500,7 @@ int main()
             << setw(45) << "-----------" << endl;
     admin1.user_pwd_enter();
     admin1.user_pwd_change();
+    admin1.user_pwd_reset();
 
     }
     else{
