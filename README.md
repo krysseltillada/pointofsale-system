@@ -15,3 +15,17 @@ version 0.1:
 -added a function to load and write a file in a file
 -added a function to check whether a string has symbols
 -added a function to check whether a string has digit or number
+
+version 0.2 
+-minor changes to the admin system
+-created main system as a main system for the functions
+-added a function to display the current time
+-added a function to diaplay the current date
+-added inventory system --->
+---- > -added a function to display
+       -added a function to add some data to the inventory
+       -added a function to modify the data in the inventory
+       -added a function to save/update the data in the inventory
+       -added a function to load the data in the inventory
+       -added a function to search, locate and manage the data in the inventory
+       
