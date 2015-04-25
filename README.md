@@ -29,3 +29,16 @@ version 0.2
        -added a function to load the data in the inventory
        -added a function to search, locate and manage the data in the inventory
        
+version 0.3
+in inventory system--->
+----> -added a function to delete some data in the inventory
+-added billing system---->
+----> -added a function to display the bill
+      -added a function to update the inventory 
+      -added a function to search and manage the inventory
+      -added a function to save the bill data
+      -added a function to load the data in the bill
+      -added a function to totalize the list in the bill
+      -added a function to input the amount to pay
+      -added a function to finalize it and gets the change
+
