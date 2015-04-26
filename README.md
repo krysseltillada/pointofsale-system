@@ -41,4 +41,16 @@ in inventory system--->
       -added a function to totalize the list in the bill
       -added a function to input the amount to pay
       -added a function to finalize it and gets the change
+      
+version 0.4 
+in billing system------->
+------> -added a function to clear the data in the list
+        -added a function to print a text (or should be say a receipt)
+        -added a function to check and load the bill
+in inventory system--------->
+------>-added a function to check and load the inventory
+in pos_system --------->
+-------> - added a function to check a valid email address
+         - added a funciton to check a valid website
+-added a main menu system
 
