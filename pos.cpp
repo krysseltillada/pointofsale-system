@@ -13,6 +13,8 @@ using namespace std;
 
 const int ROWMAXLIST = 50;
 const int COLMAXLIST = 4;
+int rowcounter = 0;
+int colcounter = 4;
 
 class Pos_system
 {
@@ -29,6 +31,8 @@ class Pos_system
     bool chck_symbols(string);
     bool ifnumber(string);
     bool ifletter(string);
+    bool chck_email(string);
+    bool chck_website(string);
     void System_time();
     void System_date();
 };
@@ -37,6 +41,69 @@ Pos_system::Pos_system(string user, string pass)
 {
     username = user;
     password = pass;
+}
+
+bool Pos_system::chck_website(string chck)
+{
+    string getdomain;
+    int countstring1 = 0;
+
+    for(int c = 0; c < chck.length(); c++)
+    {
+        if(chck.at(c) == '.'){
+            countstring1++;
+            getdomain = chck.substr(countstring1, int(chck.length()));
+             if(getdomain == "com" || getdomain == "org" || getdomain == "net" || getdomain == "int" || getdomain == "edu" || getdomain == "gov" || getdomain == "mil"){
+                        return true;
+                }
+             else{
+                return false;
+                }
+        }
+        else{
+         countstring1++;
+         continue;
+        }
+    }
+
+    return false;
+}
+
+bool Pos_system::chck_email(string chck)
+{
+    string getdomain;
+    int countstring1 = 0, countstring2 = 0, countstring3 = 0;
+    for(int c = 0; c < chck.length(); c++)
+    {
+        if(chck.at(c) == '@'){
+            countstring1++;
+            countstring3++;
+        for(; countstring1 < chck.length(); countstring1++){
+            if(chck.at(countstring1) == '.'){
+                    countstring2++;
+                    countstring2 = countstring2 + countstring3;
+                    getdomain = chck.substr(countstring2, int(chck.length()));
+                    if(getdomain == "com" || getdomain == "org" || getdomain == "net" || getdomain == "int" || getdomain == "edu" || getdomain == "gov" || getdomain == "mil"){
+                        return true;
+                    }
+                    else{
+                        return false;
+                    }
+            }
+            else{
+                countstring2++;
+                continue;
+            }
+
+        }
+        }
+        else{
+            countstring1++;
+            countstring3++;
+            continue;
+        }
+    }
+    return false;
 }
 
 bool Pos_system::ifletter(string chck)
@@ -122,8 +189,45 @@ void Admin_system::user_info_modify()
     cout << setw(27) << "company name: "; getline(cin, companyname);
     cout << setw(27) << "company description: "; getline(cin, companydescrip);
     cout << setw(27) << "branch: "; getline(cin, branch);
-    cout << setw(27) << "email: "; getline(cin, email);
-    cout << setw(27) << "website: "; getline(cin, website);
+
+    while(loop)
+    {
+        try
+        {
+            cout << setw(27) << "email: "; getline(cin, email);
+            if(chck_email(email)){
+                break;
+            }
+            else{
+                throw email;
+            }
+        }
+        catch(string email)
+        {
+            cout << "invalid " << email << " email address " << endl;
+            continue;
+        }
+    }
+
+    while(loop)
+    {
+        try
+        {
+              cout << setw(27) << "website: "; getline(cin, website);
+              if(chck_website(website)){
+                break;
+              }
+              else{
+                throw website;
+              }
+
+        }
+        catch(string website)
+        {
+            cout << "invalid website the domain is invalid or it is subdomain" << endl;
+            continue;
+        }
+    }
 
     while(loop)
     {
@@ -325,22 +429,59 @@ void Admin_system::user_info_setup()
     cout << setw(27) << "company name: "; getline(cin, companyname);
     cout << setw(27) << "company description: "; getline(cin, companydescrip);
     cout << setw(27) << "branch: "; getline(cin, branch);
-    cout << setw(27) << "email: "; getline(cin, email);
-    cout << setw(27) << "website: "; getline(cin, website);
+
+    while(loop)
+    {
+        try
+        {
+         cout << setw(27) << "email: "; getline(cin, email);
+         if(chck_email(email)){
+            break;
+         }
+         else{
+            throw email;
+         }
+        }
+        catch(string email)
+        {
+            cout << "invalid email address " << email << endl;
+            continue;
+        }
+
+    }
+
+    while(loop)
+    {
+        try
+        {
+             cout << setw(27) << "website: "; getline(cin, website);
+             if(chck_website(website)){
+                break;
+             }
+             else{
+                throw website;
+             }
+        }
+        catch(string website)
+        {
+            cout << "invalid website or it is a subdomain" << endl;
+            continue;
+        }
+    }
 
     while(loop)
     {
         try
         {
             cout << setw(27) << "telephone no.: "; getline(cin, telno);
-            if(ifnumber(telno))
+            if(chck_symbols(telno))
                 break;
             else
                 throw telno;
         }
         catch(string telno)
         {
-            cout << setw(27) << telno << " does have a letter" << endl;
+            cout << setw(27) << telno << " does have a letter or symbols" << endl;
             continue;
         }
     }
@@ -350,14 +491,14 @@ void Admin_system::user_info_setup()
         try
         {
             cout << setw(27) << "fax no.: "; getline(cin, faxno);
-            if(ifnumber(faxno))
+            if(chck_symbols(faxno))
                 break;
             else
                 throw faxno;
         }
         catch(string faxno)
         {
-            cout << setw(27) << faxno << " does have a letter" << endl;
+            cout << setw(27) << faxno << " does have a letter or symbols" << endl;
             continue;
         }
     }
@@ -476,14 +617,14 @@ void Admin_system::user_pwd_enter()
 
 void Admin_system::user_pwd_change()
 {
-    bool loop = true;
+    bool loop1 = true;
 
-    while(loop){
+    while(loop1){
     try
     {
     cout << "old username: "; getline(cin, inputusername);
     if(user_verify(inputusername)){
-        while(loop){
+        while(loop1){
             cout << "enter new username: "; getline(cin, inputusername);
             if(chck_symbols(inputusername)){
                 if(chck_str(inputusername)){
@@ -520,12 +661,12 @@ void Admin_system::user_pwd_change()
     }
     }
 
-    while(loop){
+    while(loop1){
     try
     {
     cout << "old password: "; getline(cin, inputpassword);
     if(pwd_verify(inputpassword)){
-        while(loop){
+        while(loop1){
             cout << "enter new password: "; getline(cin, inputpassword);
             if(chck_symbols(inputpassword)){
                 if(chck_str(inputpassword)){
@@ -640,6 +781,9 @@ bool Pos_system::chck_str(string checkstrng)
     }
 
     if(countstr1 > countstr2)
+        if(checkstrng.length() < 5)
+        return false;
+        else
         return true;
     else
         return false;
@@ -667,8 +811,6 @@ protected:
     string productstocks[ROWMAXLIST][COLMAXLIST];
     string price[ROWMAXLIST][COLMAXLIST];
     string expiredate[ROWMAXLIST][COLMAXLIST];
-    int rowcounter = 0;
-    int colcounter = 0;
 
 public:
     Inventory_system(string pn = "NONE", string ps = "NONE", string ed = "NONE", string d = "NONE");
@@ -678,10 +820,30 @@ public:
     void inventory_modify();
     void inventory_save();
     void inventory_load();
-    void inventory_update();
     void inventory_search_manage(string);
     void inventory_search();
+    void inventory_add_check();
+    bool inventory_load_chck();
 };
+
+bool Inventory_system::inventory_load_chck()
+{
+    string filename1 = "Inventory.txt";
+    string filename2 = "Dataloop.txt";
+    ifstream check1, check2;
+    check1.open(filename1.c_str());
+    check2.open(filename2.c_str());
+
+    if(check1.fail()){
+        return false;
+    }
+
+    if(check2.fail()){
+        return false;
+    }
+
+    return true;
+}
 
 Inventory_system::Inventory_system(string pn, string ps, string ed, string p)
 {
@@ -712,12 +874,12 @@ void Inventory_system::inventory_load()
     inFile2.open(filename2.c_str());
 
     while(inFile1.fail()){
-        cout << "failed to load the file " << filename1 << endl;
+        cout << "you dont create the list create a list now" << filename1 << endl;
         return;
     }
 
     while(inFile2.fail()){
-        cout << "failed to load the file " << filename2 << endl;
+        cout << "create a list first" << filename2 << endl;
         return;
     }
 
@@ -751,6 +913,7 @@ void Inventory_system::inventory_load()
 
 void Inventory_system::inventory_save()
 {
+    int counter = 1;
     string filename1 = "Inventory.txt";
     string filename2 = "Dataloop.txt";
 
@@ -915,7 +1078,7 @@ void Inventory_system::inventory_search_manage(string mark)
                       }
                       }
             }
-            }
+
             else if(i == 2){
                  expiredate[a][i] = "none";
                  cout << "for list no " << counter1 << endl
@@ -960,6 +1123,8 @@ void Inventory_system::inventory_search_manage(string mark)
                           continue;
                       }
                       }
+
+            }
         }
         else {cout << "mark values has not found";}
     return;
@@ -977,7 +1142,7 @@ void Inventory_system::inventory_modify()
 
 void Inventory_system::inventory_display()
 {
-    counter = 1;
+    int counter = 1;
     inventory_load();
     if(load_Admin_data()){
             cout << "               " << companyname << "   inventory list " << endl
@@ -1021,15 +1186,24 @@ void Inventory_system::inventory_display()
 
 void Inventory_system::inventory_add()
 {
+    string filename1 = "Inventory.txt";
+    string filename2 = "Dataloop.txt";
+    ifstream chckfile1, chckfile2;
+    chckfile1.open(filename1.c_str());
+    chckfile2.open(filename2.c_str());
+
     const int COL = 4;
     int ROW = 0;
+    int counter;
     bool loop = true;
     string key;
 
+    if(chckfile1.fail() && chckfile2.fail()){
     ROW++;
     for(int j = 0; j < ROW; j++)
     {
         rowcounter++;
+        counter = rowcounter;
         cout << "for list no. " << counter << endl;
         for(int i = 0; i < COL; i++)
         {
@@ -1051,6 +1225,9 @@ void Inventory_system::inventory_add()
             }
 
         }
+
+        inventory_save();
+
          while(loop)
               {
               cout << "add another one? (y or n):";
@@ -1063,7 +1240,6 @@ void Inventory_system::inventory_add()
                     break;
                 }
                 else if(key == "n"){
-                    inventory_display();
                     return;
                 }
                 else{
@@ -1079,7 +1255,69 @@ void Inventory_system::inventory_add()
         }
         counter++;
         }
+    }
+    else{
+        chckfile2 >> rowcounter >> colcounter;
+        rowcounter++;
+        cout <<"at rowcounter chck file" << rowcounter << endl;
+        for(; rowcounter < ROWMAXLIST; rowcounter++)
+        {
+        counter = rowcounter;
+        rowcounter--;
+        cout << "(fuck)for list no. " << counter << endl;
+        for(int i = 0; i < COL; i++)
+        {
+            if(i == 0){
+            cout << "product name: "; getline(cin,productname[rowcounter][i]);
+            }
+            if(i == 1){
+                cout << "number of stocks: "; getline(cin, productstocks[rowcounter][i]);
+            }
+            else if(i == 2){
+                cout << "expiration date: "; getline(cin, expiredate[rowcounter][i]);
+            }
+            else if(i == 3){
+                cout << "price: "; getline(cin, price[rowcounter][i]);
+            }
+            else{
 
+            }
+        }
+
+        ///***********************************///
+        while(loop)
+              {
+              rowcounter++;
+              cout << "add another one? (y or n):";
+              getline(cin ,key);
+              transform(key.begin(), key.end(), key.begin(), ::tolower);
+            try
+            {
+                if(key == "y"){
+                        rowcounter++;
+                    break;
+                }
+                else if(key == "n"){
+                    inventory_save();
+                    cout << "test" << endl;
+                    return;
+                }
+                else{
+                    throw key;
+                }
+            }
+            catch(string key)
+            {
+                cout << "invalid leter: " << endl;
+                continue;
+            }
+
+        }
+        ///***********************************///
+
+        }
+        inventory_save();
+    }
 
     return;
 }
@@ -1110,9 +1348,82 @@ public:
     void bill_totalize(double);
     void bill_transaction();
     void bill_transaction_finalize(double);
+    bool bill_load_chck();
 };
 
-void Billing_system::bill_clear() ///***********gonna Fix this tommorow*******////////
+bool Billing_system::bill_load_chck()
+{
+    string filename1 = "Inventory.txt";
+    string filename2 = "Dataloop.txt";
+    ifstream check1, check2;
+    check1.open(filename1.c_str());
+    check2.open(filename2.c_str());
+
+    if(check1.fail()){
+        return false;
+    }
+
+    if(check2.fail()){
+        return false;
+    }
+
+    return true;
+}
+
+void Billing_system::bill_print_receipt()
+{
+    string filename = "receipt.txt";
+    ofstream WriteReceipt;
+    int bill_receipt_counter = 1;
+    WriteReceipt.open(filename.c_str());
+
+    if(WriteReceipt.fail()){
+        cout << "failed to write the file " << filename << endl;
+        return;
+    }
+
+    WriteReceipt << "           company name: " << companyname << "  tel no.: " << telno << "  website: " << website << endl
+                 << "           email: " << email << "          fax no.: " << faxno << "  branch: " << branch << endl
+                 << "           owner: " << name << endl
+                 << "                       Billing list " << endl
+                 << "               -------------------------------" << endl;
+    WriteReceipt << "------------------------------------------------------------------" << endl
+                 << "list no  Product name    quantity    expiration date  price  total" << endl
+                 << "-------  ------------  ------------  ---------------  -----  -----" << endl;
+
+    WriteReceipt << setiosflags(ios::left);
+    for(int j = 0; j < rowcounter2; j++)
+    {
+        WriteReceipt <<  setw(10) << bill_receipt_counter;
+        for(int i = 0; i < colcounter2; i++)
+        {
+            if(i == 0){
+                WriteReceipt << setw(18)<< bill_productname[j][i];
+            }
+            else if(i == 1){
+                WriteReceipt << setw(11)<< bill_productstocks[j][i];
+            }
+            else if(i == 2){
+                WriteReceipt  << setw(15)<< bill_expiredate[j][i];
+            }
+            else if(i == 3){
+                WriteReceipt <<  setw(7)<< bill_price[j][i] << setw(2) << bill_price[j][i];
+            }
+            else{
+
+            }
+        }
+        bill_receipt_counter++;
+        WriteReceipt << endl;
+    }
+    WriteReceipt << "-------------------------------------------------------------------" << endl
+                 << "                                                      total: " << total2 << endl
+                 << "                                                      change: " << change << endl;
+
+    return;
+}
+
+void Billing_system::bill_clear()
 {
     bool loop = true;
     string input1;
@@ -1124,7 +1435,10 @@ void Billing_system::bill_clear() ///***********gonna Fix this tommorow*******//
         continue;
     }
     else if(input1 == "y" || input1 == "Y"){
-        
+        total2 = 0;
+        rowcounter2 = 0;
+        cout << "has been cleared" << endl;
+        rowcounter++;
         break;
     }
     else if(input1 == "n" || input1 == "N"){
@@ -1135,6 +1449,7 @@ void Billing_system::bill_clear() ///***********gonna Fix this tommorow*******//
         continue;
     }
     }
+
 
     return;
 }
@@ -1172,16 +1487,17 @@ void Billing_system::bill_transaction()
 {
     bool loop = true;
     string str_amt_to_pay;
-    while(true){
+    while(loop){
     cout << "amount to pay: "; getline(cin, str_amt_to_pay);
     if(ifletter(str_amt_to_pay)){
-        cout << "you type a letter" << endl;
-        continue;
+        amt_to_pay = atof(str_amt_to_pay.c_str());
+        bill_transaction_finalize(amt_to_pay);
+        break;
     }
     else{
-    amt_to_pay = atof(str_amt_to_pay.c_str());
-    bill_transaction_finalize(amt_to_pay);
-    break;
+     cout << "you type a letter" << endl;
+     continue;
+
     }
     }
     return;
@@ -1384,8 +1700,9 @@ void Billing_system::bill_display()
 
 int main()
 {
-    string input1;
-    int conv_input1_int;
+    string input1, input2, input_bill_add, input_admin_menu, input_inventory_menu;
+    int conv_input1_int, conv_input2_int ,  conv_input_bill_add_int, conv_input_admin_menu_int, conv_input_inventory_menu_int;
+    bool loop = true;
 
     Admin_system admin;
     Pos_system main;
@@ -1412,21 +1729,243 @@ int main()
             << setw(45) << "   login   " << endl
             << setw(45) << "-----------" << endl;
     admin.user_pwd_enter();
-    inventory.inventory_load();
-    inventory.inventory_display();
-    billing.bill_add();
-    billing.bill_save();
-    billing.bill_load();
-    billing.bill_display();
-    billing.bill_clear();
-    billing.bill_save();
-    billing.bill_load();
-    billing.bill_display();
-    billing.bill_add();
-    billing.bill_save();
-    billing.bill_load();
-    billing.bill_display();
+           ///sg fault//
+            while(loop){
+                try
+                {
+                 cout << endl;
+                 cout << setw(45) << "Main menu:" << endl
+                      << setw(45) << "---------" << endl
+                      << setw(45) << "1.Billing menu" << endl
+                      << setw(45) << "2.Admin menu" << endl
+                      << setw(45) << "3.Inventory menu" << endl
+                      << setw(45) << "4.exit" << endl;
+                 cout << setw(45) << "enter: "; getline(cin, input1);
+                 ///for billing menu
+                 conv_input1_int = atoi(input1.c_str());
+                 if(conv_input1_int == 1){
+                        if(billing.bill_load_chck()){
+                        while(loop){
+                        try{
+                        cout << setw(45) << "Billing menu" << endl
+                             << setw(45) << "------------" << endl
+                             << setw(45) << "1.add an item" << endl
+                             << setw(45) << "2.back " << endl;
+                        cout << setw(45) << "enter: "; getline(cin, input2);
+                        conv_input2_int = atoi(input2.c_str());
+                        ///*********************///
+                        if(conv_input2_int == 1){
+                            inventory.inventory_load();
+                            inventory.inventory_display();
+                            billing.bill_add();
+                            billing.bill_save();
+                            billing.bill_load();
+                            billing.bill_display();
+                            while(loop){
+                            try{
+                            cout << setw(45) << "options: " << endl
+                                 << setw(45) << "-------" << endl
+                                 << setw(45) << "1.add another item" << endl
+                                 << setw(45) << "2.clear the list" << endl
+                                 << setw(45) << "3.finalize" << endl
+                                 << setw(45) << "4.print the receipt" << endl
+                                 << setw(45) << "5.back" << endl;
+                            cout << setw(45) << "enter: "; getline(cin, input_bill_add);
+                            conv_input_bill_add_int = atoi(input_bill_add.c_str());
+                            if(conv_input_bill_add_int == 1){
+                                    inventory.inventory_load();
+                                    inventory.inventory_display();
+                                    billing.bill_add();
+                                    billing.bill_save();
+                                    billing.bill_load();
+                                    billing.bill_display();
+                                    continue;
+                            }
+                            else if(conv_input_bill_add_int == 2){
+                                    billing.bill_load();
+                                    billing.bill_clear();
+                                    billing.bill_save();
+                                    continue;
+                            }
+                            else if(conv_input_bill_add_int == 3){
+                                    billing.bill_load();
+                                    billing.bill_display();
+                                    billing.bill_transaction();
+                                    billing.bill_display();
+                                    billing.bill_save();
+                                    continue;
+                            }
+                            else if(conv_input_bill_add_int == 4){
+                                    billing.bill_load();
+                                    billing.bill_print_receipt();
+                                    cout << "the receipt has been printed " << endl;
+                                    continue;
 
+                            }
+                            else if(conv_input_bill_add_int == 5){
+                                    break;
+                            }
+                            else{
+                                throw input_bill_add;
+                            }
+                            }
+                            catch(string input_bill_add){
+                                cout << "invalid input " << input_bill_add << endl;
+                                continue;
+                            }
+                            }
+                        }
+                        ///*********************************/////
+                        else if(conv_input2_int == 2){
+                                break;
+
+                        }
+                        else{
+                            throw input2;
+                        }
+                        }
+                        catch(string input2){
+                            cout << "invalid choice " << input2 << endl;
+                            continue;
+                        }
+                        }
+                        }
+                        else{
+                            cout << "create a list first " << endl;
+                            continue;
+                        }
+                 }
+                 ///billing menu///
+                 ///admin menu///
+                 else if(conv_input1_int == 2){
+                        while(loop){
+                        try{
+                        cout << setw(45) << "Admin menu: " << endl
+                             << setw(45) << "----------- " << endl
+                             << setw(45) << "1.change the password and the user" << endl
+                             << setw(45) << "2.modify the admin info" << endl
+                             << setw(45) << "3.reset" << endl
+                             << setw(45) << "4.back" << endl;
+                        cout << setw(45) << "enter: "; getline(cin, input_admin_menu);
+                        conv_input_admin_menu_int = atoi(input_admin_menu.c_str());
+                        if(conv_input_admin_menu_int == 1){
+                            admin.user_pwd_change();
+                            admin.load_usr_pwd();
+                            continue;
+                        }
+                        else if(conv_input_admin_menu_int == 2){
+                            admin.user_info_modify();
+                            admin.save_Admin_data();
+                            if(admin.load_Admin_data()){}
+                            continue;
+                        }
+                        else if(conv_input_admin_menu_int == 3){
+                            admin.load_usr_pwd();
+                            admin.user_pwd_reset();
+                            admin.save_usr_pwd();
+                            admin.load_usr_pwd();
+                            continue;
+                        }
+                        else if(conv_input_admin_menu_int == 4){
+                            break;
+                        }
+                        }
+                        catch(string input_admin_menu){
+                            cout << "invalid choice " << input_admin_menu << endl;
+                            continue;
+                        }
+                        }
+                 }
+                 ///admin menu///
+                 ///inventory menu// *** continue this tommorroww found sg fault
+                 else if(conv_input1_int == 3){
+                        while(loop){
+                        try{
+                            cout << setw(45) << "Inventory menu " << endl
+                                 << setw(45) << "-------------- " << endl
+                                 << setw(45) << "1.add a item " << endl
+                                 << setw(45) << "2.delete " << endl
+                                 << setw(45) << "3.modify an item " << endl
+                                 << setw(45) << "4.display" << endl
+                                 << setw(45) << "5.back " << endl;
+                            cout << setw(45) << "enter: "; getline(cin, input_inventory_menu);
+                            conv_input_inventory_menu_int = atoi(input_inventory_menu.c_str());
+                            if(conv_input_inventory_menu_int == 1){
+                                    inventory.inventory_load();
+                                    inventory.inventory_add();
+                                    inventory.inventory_save();
+                                    inventory.inventory_load();
+                                    inventory.inventory_display();
+                                    continue;
+                            }
+                            else if(conv_input_inventory_menu_int == 2){
+                                    if(inventory.inventory_load_chck()){
+                                    inventory.inventory_load();
+                                    inventory.inventory_display();
+                                    inventory.inventory_delete();
+                                    inventory.inventory_save();
+                                    inventory.inventory_load();
+                                    inventory.inventory_display();
+                                    continue;
+                                    }
+                                    else{
+                                        cout << "create a list first " << endl;
+                                        continue;
+                                    }
+                            }
+                            else if(conv_input_inventory_menu_int == 3){
+                                    if(inventory.inventory_load_chck()){
+                                    inventory.inventory_load();
+                                    inventory.inventory_display();
+                                    inventory.inventory_modify();
+                                    inventory.inventory_save();
+                                    inventory.inventory_load();
+                                    inventory.inventory_display();
+                                    continue;
+                                    }
+                                    else{
+                                        cout << "create a list first " << endl;
+                                        continue;
+                                    }
+                            }
+                            else if(conv_input_inventory_menu_int == 4){
+                                    if(inventory.inventory_load_chck()){
+                                    inventory.inventory_load();
+                                    inventory.inventory_display();
+                                    continue;
+                                    }
+                                    else{
+                                        cout << "create a list first " << endl;
+                                        continue;
+                                    }
+                            }
+                            else if(conv_input_inventory_menu_int == 5)
+                            {
+                                break;
+                            }
+                            else{
+                                throw input_inventory_menu;
+                            }
+                        }
+                        catch(string input_inventory_menu){
+                            cout << "invalid input " << input_inventory_menu << endl;
+                            continue;
+                        }
+                        }
+                 }
+                 ///inventory menu///
+                 else if(conv_input1_int == 4){
+                        return 0;
+                 }
+                 else{
+                    throw input1;
+                 }
+                }
+                catch(string input1){
+                    cout << setw(45) << "invalid choice " << input1 << endl;
+                    continue;
+                }
+            }
     }
     else{
         cout << "file not found either corrupted or erased" << endl;
