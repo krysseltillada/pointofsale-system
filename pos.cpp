@@ -1,24 +1,23 @@
-#include <iostream>
-#include <string>
-#include <cctype>
-#include <cstdlib>
-#include <fstream>
-#include <iomanip>
-#include <ctime>
-#include <algorithm>
-#include <sstream>
-#include <cstring>
+#include <iostream> /// for outputing results and displays text
+#include <string> /// to store valuable informations
+#include <cctype> /// to determine what kind of is that
+#include <fstream> /// to save and load a file
+#include <iomanip> /// to change the positions of our text
+#include <ctime> /// to show our time
+#include <algorithm> /// for conversion
+#include <sstream> /// for conversion
+
 
 using namespace std;
 
-const int ROWMAXLIST = 50;
-const int COLMAXLIST = 4;
+const int ROWMAXLIST = 1000; /// maxnumber stored for the array
+const int COLMAXLIST = 4;  /// maxnumber stored for the array
 int rowcounter = 0;
 int colcounter = 4;
 
-class Pos_system
+class Pos_system /// parent class
 {
-    protected:
+    protected: /// use to store valuable informations
     string username;
     string password;
     string inputpassword;
@@ -37,13 +36,13 @@ class Pos_system
     void System_date();
 };
 
-Pos_system::Pos_system(string user, string pass)
+Pos_system::Pos_system(string user, string pass) /// assigns default values in the variable username and variable password
 {
     username = user;
     password = pass;
 }
 
-bool Pos_system::chck_website(string chck)
+bool Pos_system::chck_website(string chck) /// this checks if the website is valid
 {
     string getdomain;
     int countstring1 = 0;
@@ -69,7 +68,7 @@ bool Pos_system::chck_website(string chck)
     return false;
 }
 
-bool Pos_system::chck_email(string chck)
+bool Pos_system::chck_email(string chck) /// this checks if the email is valid
 {
     string getdomain;
     int countstring1 = 0, countstring2 = 0, countstring3 = 0;
@@ -106,7 +105,7 @@ bool Pos_system::chck_email(string chck)
     return false;
 }
 
-bool Pos_system::ifletter(string chck)
+bool Pos_system::ifletter(string chck) /// this checks if it is a letter
 {
     for(int c = 0; c < chck.length(); c++)
     {
@@ -118,7 +117,7 @@ bool Pos_system::ifletter(string chck)
     return true;
 }
 
-void Pos_system::System_time()
+void Pos_system::System_time() /// this shows the current time
 {
     time_t now = time(0);
     tm *ltm = localtime(&now);
@@ -129,7 +128,7 @@ void Pos_system::System_time()
     return;
 }
 
-void Pos_system::System_date()
+void Pos_system::System_date() /// this shows the current date
 {
     time_t now = time(0);
     tm *ltm = localtime(&now);
@@ -139,9 +138,9 @@ void Pos_system::System_date()
 }
 
 
-class Admin_system : virtual public Pos_system
+class Admin_system : virtual public Pos_system /// subclass
 {
-protected:
+protected: /// this stores valuable information
     string name;
     string companyname;
     string companydescrip;
@@ -168,7 +167,7 @@ public:
     void user_info_modify();
 };
 
-Admin_system::Admin_system(string n, string c_name, string b, string e, string w, string tel_no, string fax_no)
+Admin_system::Admin_system(string n, string c_name, string b, string e, string w, string tel_no, string fax_no) /// assigns default values
 {
     name = n;
     companyname = c_name;
@@ -179,7 +178,7 @@ Admin_system::Admin_system(string n, string c_name, string b, string e, string w
     faxno = fax_no;
 }
 
-void Admin_system::user_info_modify()
+void Admin_system::user_info_modify() /// this modifies the user information
 {
      cout << "               modify: please enter the following info: " << endl
          << "               --------------------------------------- " << endl;
@@ -266,9 +265,9 @@ void Admin_system::user_info_modify()
     return;
 }
 
-void Admin_system::save_Admin_data()
+void Admin_system::save_Admin_data() /// this saves the user information
 {
-    string filename = "Admin.txt";
+    string filename = "Admin.dat";
     ofstream outFile;
     outFile.open(filename.c_str());
 
@@ -289,7 +288,7 @@ void Admin_system::save_Admin_data()
     return;
 }
 
-void Admin_system::user_pwd_reset_setup()
+void Admin_system::user_pwd_reset_setup() /// this resets the all of the information
 {
     cout << "               reset: please enter your username and password             " << endl
          << "               ----------------------------------------------             " << endl;
@@ -346,7 +345,7 @@ void Admin_system::user_pwd_reset_setup()
     return;
 }
 
-bool Admin_system::user_pwd_reset_confirm()
+bool Admin_system::user_pwd_reset_confirm() /// this confirms the reset code entered
 {
     bool loop = true;
     string filename = "resetcode.txt";
@@ -383,7 +382,7 @@ bool Admin_system::user_pwd_reset_confirm()
     return true;
 }
 
-void Admin_system::user_pwd_reset()
+void Admin_system::user_pwd_reset() /// this resets the password and username ang generates a reset code
 {
     string filename = "resetcode.txt";
     ofstream outFile;
@@ -406,7 +405,7 @@ void Admin_system::user_pwd_reset()
     return;
 }
 
-bool Pos_system::ifnumber(string check)
+bool Pos_system::ifnumber(string check) /// this checks if it is a number
 {
     for(int i = 0; i < int(check.length()); i++)
     {
@@ -419,7 +418,7 @@ bool Pos_system::ifnumber(string check)
     return true;
 }
 
-void Admin_system::user_info_setup()
+void Admin_system::user_info_setup() /// this puts all of your user info
 {
     cout << "               setup: please enter the following info: " << endl
          << "               --------------------------------------- " << endl;
@@ -506,9 +505,9 @@ void Admin_system::user_info_setup()
     return;
 }
 
-bool Admin_system::load_Admin_data()
+bool Admin_system::load_Admin_data() /// this loads the user info
 {
-    string filename = "Admin.txt";
+    string filename = "Admin.dat";
     ifstream inFile;
     inFile.open(filename.c_str());
 
@@ -519,9 +518,9 @@ bool Admin_system::load_Admin_data()
     return true;
 }
 
-void Admin_system::save_usr_pwd()
+void Admin_system::save_usr_pwd() /// this saves the password and the username
 {
-    string filename = "Data.txt";
+    string filename = "Data.dat";
     ofstream outFile;
     outFile.open(filename.c_str());
 
@@ -536,9 +535,9 @@ void Admin_system::save_usr_pwd()
     return;
 }
 
-bool Pos_system::load_usr_pwd()
+bool Pos_system::load_usr_pwd() /// this loads the password and the username
 {
-    string filename = "Data.txt";
+    string filename = "Data.dat";
     ifstream inFile;
 
     inFile.open(filename.c_str());
@@ -554,7 +553,7 @@ bool Pos_system::load_usr_pwd()
     return false;
 }
 
-bool Admin_system::user_verify(string usr)
+bool Admin_system::user_verify(string usr) /// this verifies if the correct username is entered
 {
     if(usr == username)
         return true;
@@ -562,7 +561,7 @@ bool Admin_system::user_verify(string usr)
         return false;
 }
 
-bool Admin_system::pwd_verify(string pwd)
+bool Admin_system::pwd_verify(string pwd) /// this verifies if the correct password is entered
 {
     if(pwd == password)
         return true;
@@ -570,7 +569,7 @@ bool Admin_system::pwd_verify(string pwd)
         return false;
 }
 
-void Admin_system::user_pwd_enter()
+void Admin_system::user_pwd_enter() /// this lets you entered your password and username
 {
     bool loop = true;
 
@@ -615,7 +614,7 @@ void Admin_system::user_pwd_enter()
     return;
 }
 
-void Admin_system::user_pwd_change()
+void Admin_system::user_pwd_change() /// this change your password and username
 {
     bool loop1 = true;
 
@@ -708,7 +707,7 @@ void Admin_system::user_pwd_change()
     return;
 }
 
-void Admin_system::user_pwd_setup()
+void Admin_system::user_pwd_setup() /// this setups your username and password
 {
     cout << "               setup: please enter your username and password             " << endl
          << "               ----------------------------------------------             " << endl;
@@ -767,7 +766,7 @@ void Admin_system::user_pwd_setup()
     return;
 }
 
-bool Pos_system::chck_str(string checkstrng)
+bool Pos_system::chck_str(string checkstrng) /// this checks if a password or username is strong
 {
     int countstr1 = 0, countstr2 = 0;
 
@@ -789,7 +788,7 @@ bool Pos_system::chck_str(string checkstrng)
         return false;
 }
 
-bool Pos_system::chck_symbols(string checkstrng)
+bool Pos_system::chck_symbols(string checkstrng) /// this checks if it is a symbols
 {
     for(int i = 0; i < int(checkstrng.length()); i++)
     {
@@ -803,9 +802,9 @@ bool Pos_system::chck_symbols(string checkstrng)
 
 }
 
-class Inventory_system: public virtual Admin_system, public virtual Pos_system
+class Inventory_system: public virtual Admin_system, public virtual Pos_system /// sublasss
 {
-protected:
+protected: /// stores all of the data in you store in the inventory
     int counter = 1;
     string productname[ROWMAXLIST][COLMAXLIST];
     string productstocks[ROWMAXLIST][COLMAXLIST];
@@ -826,10 +825,10 @@ public:
     bool inventory_load_chck();
 };
 
-bool Inventory_system::inventory_load_chck()
+bool Inventory_system::inventory_load_chck() /// this checks whether the an inventory file is load successfully
 {
-    string filename1 = "Inventory.txt";
-    string filename2 = "Dataloop.txt";
+    string filename1 = "Inventory.dat";
+    string filename2 = "Dataloop.dat";
     ifstream check1, check2;
     check1.open(filename1.c_str());
     check2.open(filename2.c_str());
@@ -845,7 +844,7 @@ bool Inventory_system::inventory_load_chck()
     return true;
 }
 
-Inventory_system::Inventory_system(string pn, string ps, string ed, string p)
+Inventory_system::Inventory_system(string pn, string ps, string ed, string p) /// assigns default values
 {
     productname[ROWMAXLIST][COLMAXLIST] = pn;
     productstocks[ROWMAXLIST][COLMAXLIST] = ps;
@@ -853,7 +852,7 @@ Inventory_system::Inventory_system(string pn, string ps, string ed, string p)
     expiredate[ROWMAXLIST][COLMAXLIST] = p;
 }
 
-void Inventory_system::inventory_delete()
+void Inventory_system::inventory_delete() /// deletes some data in the inventory
 {
     string mark = "delete";
     cout << "delete: " << endl;
@@ -863,10 +862,10 @@ void Inventory_system::inventory_delete()
 
 }
 
-void Inventory_system::inventory_load()
+void Inventory_system::inventory_load() /// load the inventory
 {
-    string filename1 = "Inventory.txt";
-    string filename2 = "Dataloop.txt";
+    string filename1 = "Inventory.dat";
+    string filename2 = "Dataloop.dat";
 
     ifstream inFile1, inFile2;
 
@@ -874,7 +873,6 @@ void Inventory_system::inventory_load()
     inFile2.open(filename2.c_str());
 
     while(inFile1.fail()){
-        cout << "you dont create the list create a list now" << filename1 << endl;
         return;
     }
 
@@ -911,11 +909,11 @@ void Inventory_system::inventory_load()
     return;
 }
 
-void Inventory_system::inventory_save()
+void Inventory_system::inventory_save() /// saves or updates the inventory
 {
     int counter = 1;
-    string filename1 = "Inventory.txt";
-    string filename2 = "Dataloop.txt";
+    string filename1 = "Inventory.dat";
+    string filename2 = "Dataloop.dat";
 
     ofstream writeFile1, writeFile2;
     writeFile1.open(filename1.c_str());
@@ -965,7 +963,7 @@ void Inventory_system::inventory_save()
 
 }
 
-void Inventory_system::inventory_search_manage(string mark)
+void Inventory_system::inventory_search_manage(string mark) /// this search and manages some specific operations in the inventory
 {
     bool loop = true;
     string inputnum1, inputnum2, inputnum3, delinput1, delinput2;
@@ -1130,7 +1128,7 @@ void Inventory_system::inventory_search_manage(string mark)
     return;
 }
 
-void Inventory_system::inventory_modify()
+void Inventory_system::inventory_modify() /// modifies the inventory
 {
     string mark = "modify";
     cout << ":modify " << endl;
@@ -1140,7 +1138,7 @@ void Inventory_system::inventory_modify()
     return;
 }
 
-void Inventory_system::inventory_display()
+void Inventory_system::inventory_display() /// displays the list in the inventory
 {
     int counter = 1;
     inventory_load();
@@ -1184,10 +1182,10 @@ void Inventory_system::inventory_display()
     return;
 }
 
-void Inventory_system::inventory_add()
+void Inventory_system::inventory_add() /// adds a data in the inventory
 {
-    string filename1 = "Inventory.txt";
-    string filename2 = "Dataloop.txt";
+    string filename1 = "Inventory.dat";
+    string filename2 = "Dataloop.dat";
     ifstream chckfile1, chckfile2;
     chckfile1.open(filename1.c_str());
     chckfile2.open(filename2.c_str());
@@ -1259,12 +1257,11 @@ void Inventory_system::inventory_add()
     else{
         chckfile2 >> rowcounter >> colcounter;
         rowcounter++;
-        cout <<"at rowcounter chck file" << rowcounter << endl;
         for(; rowcounter < ROWMAXLIST; rowcounter++)
         {
         counter = rowcounter;
         rowcounter--;
-        cout << "(fuck)for list no. " << counter << endl;
+        cout << "for list no. " << counter << endl;
         for(int i = 0; i < COL; i++)
         {
             if(i == 0){
@@ -1322,10 +1319,10 @@ void Inventory_system::inventory_add()
     return;
 }
 
-///has some bugs///
-class Billing_system : public virtual Admin_system, public virtual Inventory_system, public virtual Pos_system
+
+class Billing_system : public virtual Admin_system, public virtual Inventory_system, public virtual Pos_system /// subclass
 {
-protected:
+protected:/// stores some values in the billing
     int rowcounter2 = 0;
     int colcounter2 = 4;
     double total2 = 0;
@@ -1351,10 +1348,10 @@ public:
     bool bill_load_chck();
 };
 
-bool Billing_system::bill_load_chck()
+bool Billing_system::bill_load_chck() /// checks whether the it loads successfully
 {
-    string filename1 = "Inventory.txt";
-    string filename2 = "Dataloop.txt";
+    string filename1 = "Inventory.dat";
+    string filename2 = "Dataloop.dat";
     ifstream check1, check2;
     check1.open(filename1.c_str());
     check2.open(filename2.c_str());
@@ -1370,7 +1367,7 @@ bool Billing_system::bill_load_chck()
     return true;
 }
 
-void Billing_system::bill_print_receipt()
+void Billing_system::bill_print_receipt() /// prints the receipt
 {
     string filename = "receipt.txt";
     ofstream WriteReceipt;
@@ -1423,7 +1420,7 @@ void Billing_system::bill_print_receipt()
     return;
 }
 
-void Billing_system::bill_clear()
+void Billing_system::bill_clear() /// clears a list in a bill
 {
     bool loop = true;
     string input1;
@@ -1437,6 +1434,8 @@ void Billing_system::bill_clear()
     else if(input1 == "y" || input1 == "Y"){
         total2 = 0;
         rowcounter2 = 0;
+        change = 0;
+        amt_to_pay = 0;
         cout << "has been cleared" << endl;
         rowcounter++;
         break;
@@ -1454,7 +1453,7 @@ void Billing_system::bill_clear()
     return;
 }
 
-int Billing_system::bill_inventory_update(string input1)
+int Billing_system::bill_inventory_update(string input1) /// updates the inventory
 {
     ostringstream conv_str_int;
     int curr_inventory, updated_inventory;
@@ -1478,12 +1477,12 @@ int Billing_system::bill_inventory_update(string input1)
     return 1;
 }
 
-void Billing_system::bill_transaction_finalize(double amt_to_pay)
+void Billing_system::bill_transaction_finalize(double amt_to_pay) /// calculates the amount that you payed and the total of the products purchased
 {
     change = amt_to_pay - total2;
 }
 
-void Billing_system::bill_transaction()
+void Billing_system::bill_transaction() /// same as the bill_transaction_finalize
 {
     bool loop = true;
     string str_amt_to_pay;
@@ -1503,16 +1502,16 @@ void Billing_system::bill_transaction()
     return;
 }
 
-void Billing_system::bill_totalize(double total1)
+void Billing_system::bill_totalize(double total1) /// calculates the sum of all the products purchased
 {
     total2 = total2 + total1;
     return;
 }
 
-void Billing_system::bill_load()
+void Billing_system::bill_load() /// loads the bill
 {
-    string filename1 = "Bill.txt";
-    string filename2 = "Billloop.txt";
+    string filename1 = "Bill.dat";
+    string filename2 = "Billloop.dat";
 
     ifstream loadFile1, loadFile2;
 
@@ -1556,10 +1555,10 @@ void Billing_system::bill_load()
     return;
 }
 
-void Billing_system::bill_save()
+void Billing_system::bill_save() /// saves and updates the data in the bill
 {
-    string filename3 = "Bill.txt";
-    string filename4 = "Billloop.txt";
+    string filename3 = "Bill.dat";
+    string filename4 = "Billloop.dat";
     ofstream saveFile1, saveFile2;
     saveFile1.open(filename3.c_str());
     saveFile2.open(filename4.c_str());
@@ -1605,7 +1604,7 @@ void Billing_system::bill_save()
 
 }
 
-void Billing_system::bill_search_manage(string input1, string mark)
+void Billing_system::bill_search_manage(string input1, string mark) /// search and manages the bill to perform specific operations
 {
     ostringstream conv_str;
     inventory_load();
@@ -1629,7 +1628,7 @@ void Billing_system::bill_search_manage(string input1, string mark)
 
 }
 
-void Billing_system::bill_add()
+void Billing_system::bill_add() /// adds a product in the billing list
 {
     bool loop = true;
     string input1;
@@ -1652,7 +1651,7 @@ void Billing_system::bill_add()
     return;
 }
 
-void Billing_system::bill_display()
+void Billing_system::bill_display() /// displays the billing list
 {
     int bill_display_counter = 1;
     if(load_Admin_data()){
@@ -1711,15 +1710,14 @@ int main()
 
     if(admin.load_usr_pwd())
     {
-     cout << "file not found (test)" << endl;
      admin.user_pwd_setup();
      admin.save_usr_pwd();
      cout << endl;
      admin.user_info_setup();
      admin.save_Admin_data();
     }
-
-    if(admin.load_Admin_data()){
+     
+    if(admin.load_Admin_data()){/// login interface
     main.System_date();
     main.System_time();
        cout << endl;
@@ -1877,7 +1875,6 @@ int main()
                         }
                  }
                  ///admin menu///
-                 ///inventory menu// *** continue this tommorroww found sg fault
                  else if(conv_input1_int == 3){
                         while(loop){
                         try{
@@ -1892,6 +1889,7 @@ int main()
                             conv_input_inventory_menu_int = atoi(input_inventory_menu.c_str());
                             if(conv_input_inventory_menu_int == 1){
                                     inventory.inventory_load();
+                                    inventory.inventory_display();
                                     inventory.inventory_add();
                                     inventory.inventory_save();
                                     inventory.inventory_load();
