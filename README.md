@@ -54,3 +54,7 @@ in pos_system --------->
          - added a funciton to check a valid website
 -added a main menu system
 
+version 0.5
+-all the file types has been change except one
+-cleaning some unuseful code or comments
+
