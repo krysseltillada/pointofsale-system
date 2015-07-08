@@ -58,3 +58,7 @@ version 0.5
 -all the file types has been change except one
 -cleaning some unuseful code or comments
 
+version 0.6
+-remove compiler warnings
+-added basic info and about
+
