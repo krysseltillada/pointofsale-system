@@ -7,13 +7,12 @@
 #include <algorithm> /// for conversion
 #include <sstream> /// for conversion
 
-
 using namespace std;
 
-const int ROWMAXLIST = 1000; /// maxnumber stored for the array
-const int COLMAXLIST = 4;  /// maxnumber stored for the array
-int rowcounter = 0;
-int colcounter = 4;
+const size_t ROWMAXLIST = 1000; /// maxnumber stored for the array
+const size_t COLMAXLIST = 4;  /// maxnumber stored for the array
+size_t rowcounter = 0;
+size_t colcounter = 4;
 
 class Pos_system /// parent class
 {
@@ -47,7 +46,7 @@ bool Pos_system::chck_website(string chck) /// this checks if the website is val
     string getdomain;
     int countstring1 = 0;
 
-    for(int c = 0; c < chck.length(); c++)
+    for(unsigned c = 0; c < chck.length(); c++)
     {
         if(chck.at(c) == '.'){
             countstring1++;
@@ -71,8 +70,8 @@ bool Pos_system::chck_website(string chck) /// this checks if the website is val
 bool Pos_system::chck_email(string chck) /// this checks if the email is valid
 {
     string getdomain;
-    int countstring1 = 0, countstring2 = 0, countstring3 = 0;
-    for(int c = 0; c < chck.length(); c++)
+    unsigned countstring1 = 0, countstring2 = 0, countstring3 = 0;
+    for(unsigned c = 0; c < chck.length(); c++)
     {
         if(chck.at(c) == '@'){
             countstring1++;
@@ -107,7 +106,7 @@ bool Pos_system::chck_email(string chck) /// this checks if the email is valid
 
 bool Pos_system::ifletter(string chck) /// this checks if it is a letter
 {
-    for(int c = 0; c < chck.length(); c++)
+    for(unsigned c = 0; c < chck.length(); c++)
     {
         if(isalpha(chck.at(c)))
             return false;
@@ -124,6 +123,7 @@ void Pos_system::System_time() /// this shows the current time
 
      cout << "time: "<< (( ltm->tm_hour == 00 ||  ltm->tm_hour == 12) ? 12 : ltm->tm_hour % 12) << ":"
           << setw(2) <<  ltm->tm_min << ":" << setw(2) <<  ltm->tm_sec << ( ltm->tm_hour < 12 ? " AM" : " PM");
+
 
     return;
 }
@@ -165,6 +165,8 @@ public:
     bool load_Admin_data();
     void save_usr_pwd();
     void user_info_modify();
+    void basic_info();
+    void about();
 };
 
 Admin_system::Admin_system(string n, string c_name, string b, string e, string w, string tel_no, string fax_no) /// assigns default values
@@ -176,6 +178,28 @@ Admin_system::Admin_system(string n, string c_name, string b, string e, string w
     website = w;
     telno = tel_no;
     faxno = fax_no;
+}
+
+void Admin_system::about ()
+{
+    cout << setw(45) << "about" << endl
+         << setw(45) << "-----" << endl
+         << setw(45) << "ver 0.6 " << endl
+         << setw(45) << "changes:---> remove compiler warnings " << endl
+         << setw(45) << "            displays basic information and about" << endl
+         << setw(45) << "programmer: -sakuya :) " << endl;
+}
+
+void Admin_system::basic_info ()
+{
+   cout << setw(45) << "basic information " << endl
+        << setw(45) << "----------------- " << endl
+        << setw(45) << "owner: " << name << endl
+        << setw(45) << "company name: " << companyname << endl
+        << setw(45) << "email address: " << email << endl
+        << setw(45) << "website: " << website << endl
+        << setw(45) << "tel no: " << telno << endl
+        << setw(45) << "fax no: " << faxno << endl;
 }
 
 void Admin_system::user_info_modify() /// this modifies the user information
@@ -407,7 +431,7 @@ void Admin_system::user_pwd_reset() /// this resets the password and username an
 
 bool Pos_system::ifnumber(string check) /// this checks if it is a number
 {
-    for(int i = 0; i < int(check.length()); i++)
+    for(unsigned i = 0; i < check.length(); i++)
     {
         if(isalpha(check.at(i)))
             return false;
@@ -770,7 +794,7 @@ bool Pos_system::chck_str(string checkstrng) /// this checks if a password or us
 {
     int countstr1 = 0, countstr2 = 0;
 
-    for(int i = 0; i < int(checkstrng.length()); i++){
+    for(unsigned i = 0; i < checkstrng.length(); i++){
         if(isdigit(checkstrng.at(i)))
             countstr1++;
         else if(isupper(checkstrng.at(i)))
@@ -883,9 +907,9 @@ void Inventory_system::inventory_load() /// load the inventory
 
     inFile2 >> rowcounter >> colcounter;
 
-    for(int p = 0; p < rowcounter; p++)
+    for(unsigned p = 0; p < static_cast<unsigned>(rowcounter); p++)
     {
-        for(int l = 0; l < colcounter; l++)
+        for(unsigned l = 0; l < static_cast<unsigned>(colcounter); l++)
         {
             if(l == 0){
             inFile1 >> productname[p][l];
@@ -930,9 +954,9 @@ void Inventory_system::inventory_save() /// saves or updates the inventory
     }
 
     writeFile1 << setiosflags(ios::left);
-    for(int j = 0; j < rowcounter; j++)
+    for(unsigned j = 0; j < rowcounter; j++)
     {
-        for(int i = 0; i < colcounter; i++)
+        for(unsigned i = 0; i < colcounter; i++)
         {
             if(i == 0){
                 writeFile1 << setw(18)<< productname[j][i];
@@ -1150,10 +1174,10 @@ void Inventory_system::inventory_display() /// displays the list in the inventor
                  << "-------  ------------  ------------  ---------------  -----" << endl;
 
     cout << setiosflags(ios::left);
-    for(int j = 0; j < rowcounter; j++)
+    for(unsigned j = 0; j < static_cast<unsigned>(rowcounter); j++)
     {
         cout <<  setw(10) << counter;
-        for(int i = 0; i < colcounter; i++)
+        for(unsigned i = 0; i < colcounter; i++)
         {
             if(i == 0){
                 cout << setw(18)<< productname[j][i];
@@ -1198,7 +1222,7 @@ void Inventory_system::inventory_add() /// adds a data in the inventory
 
     if(chckfile1.fail() && chckfile2.fail()){
     ROW++;
-    for(int j = 0; j < ROW; j++)
+    for(unsigned j = 0; j < static_cast<unsigned>(ROW); j++)
     {
         rowcounter++;
         counter = rowcounter;
@@ -1389,10 +1413,10 @@ void Billing_system::bill_print_receipt() /// prints the receipt
                  << "-------  ------------  ------------  ---------------  -----  -----" << endl;
 
     WriteReceipt << setiosflags(ios::left);
-    for(int j = 0; j < rowcounter2; j++)
+    for(unsigned j = 0; j < static_cast<unsigned>(rowcounter2); j++)
     {
         WriteReceipt <<  setw(10) << bill_receipt_counter;
-        for(int i = 0; i < colcounter2; i++)
+        for(unsigned i = 0; i < static_cast<unsigned>(colcounter2); i++)
         {
             if(i == 0){
                 WriteReceipt << setw(18)<< bill_productname[j][i];
@@ -1577,9 +1601,9 @@ void Billing_system::bill_save() /// saves and updates the data in the bill
               << colcounter2 << endl;
 
     saveFile1 << setiosflags(ios::left);
-    for(int l = 0; l < rowcounter2; l++)
+    for(unsigned l = 0; l < static_cast<unsigned>(rowcounter2); l++)
     {
-        for(int b = 0; b < colcounter2; b++)
+        for(unsigned b = 0; b < static_cast<unsigned>(colcounter2); b++)
         {
             if(b == 0){
                 saveFile1 << setw(18)<< bill_productname[l][b];
@@ -1665,10 +1689,10 @@ void Billing_system::bill_display() /// displays the billing list
                  << "-------  ------------  ------------  ---------------  -----  -----" << endl;
 
     cout << setiosflags(ios::left);
-    for(int j = 0; j < rowcounter2; j++)
+    for(unsigned j = 0; j < static_cast<unsigned>(rowcounter2); j++)
     {
         cout <<  setw(10) << bill_display_counter;
-        for(int i = 0; i < colcounter2; i++)
+        for(unsigned i = 0; i < static_cast<unsigned>(colcounter2); i++)
         {
             if(i == 0){
                 cout << setw(18)<< bill_productname[j][i];
@@ -1700,7 +1724,7 @@ void Billing_system::bill_display() /// displays the billing list
 int main()
 {
     string input1, input2, input_bill_add, input_admin_menu, input_inventory_menu;
-    int conv_input1_int, conv_input2_int ,  conv_input_bill_add_int, conv_input_admin_menu_int, conv_input_inventory_menu_int;
+    int conv_input1_int = 0, conv_input2_int = 0,  conv_input_bill_add_int = 0, conv_input_admin_menu_int = 0, conv_input_inventory_menu_int = 0;
     bool loop = true;
 
     Admin_system admin;
@@ -1716,7 +1740,7 @@ int main()
      admin.user_info_setup();
      admin.save_Admin_data();
     }
-     
+
     if(admin.load_Admin_data()){/// login interface
     main.System_date();
     main.System_time();
@@ -1727,7 +1751,7 @@ int main()
             << setw(45) << "   login   " << endl
             << setw(45) << "-----------" << endl;
     admin.user_pwd_enter();
-           ///sg fault//
+           ///sg fault fixed cause: some variables is not used ///
             while(loop){
                 try
                 {
@@ -1737,7 +1761,8 @@ int main()
                       << setw(45) << "1.Billing menu" << endl
                       << setw(45) << "2.Admin menu" << endl
                       << setw(45) << "3.Inventory menu" << endl
-                      << setw(45) << "4.exit" << endl;
+                      << setw(45) << "4.about" << endl
+                      << setw(45) << "5.exit " << endl;
                  cout << setw(45) << "enter: "; getline(cin, input1);
                  ///for billing menu
                  conv_input1_int = atoi(input1.c_str());
@@ -1953,6 +1978,39 @@ int main()
                  }
                  ///inventory menu///
                  else if(conv_input1_int == 4){
+                        string key;
+
+                        while (true) {
+
+                        cout << setw(45) << "info " << endl
+                             << setw(45) << "----"  << endl
+                             << setw(45) << "1.basic information" << endl
+                             << setw(45) << "2.about" << endl
+                             << setw(45) << "3.back" << endl;
+
+                        cout << setw(45) << "enter: "; getline(cin, key);
+
+                        switch (atoi(key.c_str())) {
+                        case 1:
+                            admin.basic_info();
+                            continue;
+                        case 2:
+                            admin.about();
+                            continue;
+                        case 3:
+                             goto back;
+                        default:
+                            cout << "error input " << endl;
+                            continue;
+                        }
+
+                        }
+
+                        back:
+
+                        continue;
+                 }
+                 else if(conv_input1_int == 5) {
                         return 0;
                  }
                  else{
